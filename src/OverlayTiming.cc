@@ -263,6 +263,12 @@ namespace overlay {
                                m_startWithBackgroundEvent);
 
 
+    // processo MCContribution
+    registerProcessorParameter("ProcessMCContribution",
+                             "Merging the SimCaloHits check if the MCContributions already exist",
+                             _checkMCC,
+                             bool(true) );
+
   }
 
   //------------------------------------------------------------------------------------------------------------------------------------------
@@ -791,7 +797,7 @@ namespace overlay {
               {
                 SimCalorimeterHit *CalorimeterHit = static_cast<SimCalorimeterHit*>(source_collection->getElementAt(k));
                 const float _time_of_flight = time_of_flight(CalorimeterHit->getPosition()[0], CalorimeterHit->getPosition()[1], CalorimeterHit->getPosition()[2]);
-
+                float nullStep[3] = { 0.,0.,0. } ;
                 //check whether there is already a hit at this position
                 const unsigned long long lookfor = cellID2long(CalorimeterHit->getCellID0(), CalorimeterHit->getCellID1());
                 DestMap::const_iterator destMapIt = collDestMap[currentDest].find(lookfor);
@@ -806,7 +812,10 @@ namespace overlay {
                         if (((CalorimeterHit->getTimeCont(j) + time_offset) > (this_start + _time_of_flight)) && ((CalorimeterHit->getTimeCont(j) + time_offset) < (this_stop + _time_of_flight)))
                           {
                             add_Hit = true;
-                            newCalorimeterHit->addMCParticleContribution(CalorimeterHit->getParticleCont(j), CalorimeterHit->getEnergyCont(j), CalorimeterHit->getTimeCont(j) + time_offset);
+                            if ( _checkMCC )
+                              newCalorimeterHit->addMCParticleContribution(CalorimeterHit->getParticleCont(j), CalorimeterHit->getEnergyCont(j), CalorimeterHit->getTimeCont(j) + time_offset);
+                            else 
+                              newCalorimeterHit->addMCParticleContribution(CalorimeterHit->getParticleCont(j), CalorimeterHit->getEnergyCont(j), CalorimeterHit->getTimeCont(j) + time_offset, 0, 0, nullStep);
                           }
                       }
                     if (add_Hit)
@@ -859,7 +868,11 @@ namespace overlay {
                       {
                         if (((CalorimeterHit->getTimeCont(j) + time_offset) > (this_start + _time_of_flight)) && ((CalorimeterHit->getTimeCont(j) + time_offset) < (this_stop + _time_of_flight)))
                           {
-                            newCalorimeterHit->addMCParticleContribution(CalorimeterHit->getParticleCont(j), CalorimeterHit->getEnergyCont(j), CalorimeterHit->getTimeCont(j) + time_offset);
+                            if ( _checkMCC )
+                              newCalorimeterHit->addMCParticleContribution(CalorimeterHit->getParticleCont(j), CalorimeterHit->getEnergyCont(j), CalorimeterHit->getTimeCont(j) + time_offset);
+                            else 
+                              newCalorimeterHit->addMCParticleContribution(CalorimeterHit->getParticleCont(j), CalorimeterHit->getEnergyCont(j), CalorimeterHit->getTimeCont(j) + time_offset, 0, 0, nullStep);
+                            
                           }
                       }
                   }
