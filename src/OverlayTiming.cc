@@ -557,7 +557,7 @@ namespace overlay {
 
     delete permutation;
     ++_nEvt;
-    //we clear the map of calorimeter hits for the next event
+    // we clear the map of calorimeter hits for the next event
     collDestMap.clear();
     const std::vector<std::string> *collection_names_in_evt = evt->getCollectionNames();
 
@@ -565,6 +565,9 @@ namespace overlay {
       {
         streamlog_out(DEBUG) << "Collection " << collection_names_in_evt->at(i) << " has now " << evt->getCollection(collection_names_in_evt->at(i))->getNumberOfElements() << " elements" << std::endl;
       }
+
+    // reset pointer at end
+    overlay_Evt = nullptr;
 
   }
 
