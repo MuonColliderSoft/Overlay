@@ -147,6 +147,8 @@ namespace overlay {
     float _tpcVdrift_mm_ns = 5.0e-2 ;
     bool _randomBX = false, _Poisson = false;
 
+    bool _checkMCC = true;
+
     typedef std::map<unsigned long long, EVENT::SimCalorimeterHit*> DestMap;
     typedef std::map<std::string, DestMap> CollDestMap;
     CollDestMap collDestMap{};

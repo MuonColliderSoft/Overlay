@@ -100,6 +100,12 @@ OverlayTimingGeneric::OverlayTimingGeneric(): OverlayTiming("OverlayTimingGeneri
                                "Starting integration time.  Should be shortly before the BX, but may need to be shifted earlier if the vertex is smeared in time.",
                                _DefaultStart_int,
                                float(-0.25));
+    // processo MCContribution
+    registerProcessorParameter("ProcessMCContribution",
+                             "Merging the SimCaloHits check if the MCContributions already exist",
+                             _checkMCC,
+                             bool(true) );
+
 }
 
 void OverlayTimingGeneric::init()
